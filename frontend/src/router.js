@@ -7,11 +7,11 @@ import App from "./App";
 
 // Import our page components
 import HomePage from "./pages/HomePage";
-import ComplaintsPage from "./pages/ComplaintsPage";
-import NewComplaintPage from "./pages/NewComplaintPage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import ResetPasswordPage from "./pages/ResetPasswordPage";
+import ProtectedComplaintsPage from "./pages/ProtectedComplaintsPage";
+import ProtectedNewComplaintPage from "./pages/ProtectedNewComplaintPage";
+import PublicLoginPage from "./pages/PublicLoginPage";
+import PublicRegisterPage from "./pages/PublicRegisterPage";
+import PublicResetPasswordPage from "./pages/PublicResetPasswordPage";
 
 // 🏠 STEP 1: Create the root route (this is like the main layout)
 const rootRoute = createRootRoute({
@@ -28,32 +28,32 @@ const indexRoute = createRoute({
 const complaintsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/complaints",
-  component: ComplaintsPage,
+  component: ProtectedComplaintsPage,
 });
 
 const newComplaintRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/complaints/new",
-  component: NewComplaintPage,
+  component: ProtectedNewComplaintPage,
 });
 
 // Auth routes
 const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/login",
-  component: LoginPage,
+  component: PublicLoginPage,
 });
 
 const registerRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/register",
-  component: RegisterPage,
+  component: PublicRegisterPage,
 });
 
 const resetPasswordRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/reset-password",
-  component: ResetPasswordPage,
+  component: PublicResetPasswordPage,
 });
 
 // 🏠 STEP 3: Connect all routes together (like a family tree)

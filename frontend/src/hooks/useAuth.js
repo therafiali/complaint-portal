@@ -112,8 +112,13 @@ export const useCurrentUser = () => {
   return useQuery({
     queryKey: ["user"],
     queryFn: getCurrentUser,
-    retry: false,
+    retry: 2, // Allow 2 retries
+    retryDelay: 1000, // Wait 1 second between retries
     staleTime: 1000 * 60 * 5, // 5 minutes
+    onError: (error) => {
+      // Only log the error, don't trigger logout automatically
+      console.error("Error fetching current user:", error);
+    },
   });
 };
 

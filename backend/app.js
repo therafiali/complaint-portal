@@ -2,6 +2,7 @@
 const express = require("express");
 const connectDB = require("./database");
 const authRoutes = require("./routes/authRoutes");
+const complaintRoutes = require("./routes/complaintRoutes");
 const cors = require("cors");
 
 // Creating an Express application instance
@@ -16,6 +17,7 @@ connectDB();
 app.use(express.json());
 
 app.use("/api", authRoutes);
+app.use("/api", complaintRoutes);
 
 // Default route
 app.get("/", (req, res) => {

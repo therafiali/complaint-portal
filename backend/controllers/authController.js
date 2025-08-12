@@ -34,7 +34,10 @@ exports.login = async (req, res) => {
       return res.status(401).json({ error: "Invalid email or password" });
 
     const token = jwt.sign(
-      { email: user.email },
+      {
+        id: user._id,
+        email: user.email,
+      },
       process.env.JWT_SECRET || "secret",
       {
         expiresIn: "1h",
@@ -49,7 +52,7 @@ exports.login = async (req, res) => {
 
 exports.getUser = async (req, res) => {
   try {
-    const user = await User.findOne({ email: req.user.email });
+    const user = await User.findById(req.user.id);
     if (!user) return res.status(404).json({ error: "User not found" });
 
     res.status(200).json({
@@ -84,7 +87,6 @@ exports.resetPassword = async (req, res) => {
     res.status(201).json({
       message: "new Password updated",
     });
-
   } catch (error) {
     res.status(500).json({ error: "Server error", details: err.message });
   }
