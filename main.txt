@@ -1,0 +1,3 @@
+mongodb+srv://therafiali:<db_password>@cluster0.ruz4rnf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+G7YrwaZ8Wc4003fm
