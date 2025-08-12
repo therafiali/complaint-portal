@@ -46,32 +46,33 @@ const ComplaintsPage = () => {
     );
   };
 
-  const getStatusColor = (status) => {
+  const getStatusClass = (status) => {
     switch (status) {
       case "resolved":
-        return "#4caf50";
+        return "status-badge status-resolved";
       case "in-progress":
-        return "#ff9800";
+        return "status-badge status-in-progress";
       case "rejected":
-        return "#f44336";
+        return "status-badge status-rejected";
       case "pending":
       default:
-        return "#2196f3";
+        return "status-badge status-pending";
     }
   };
 
   if (isLoading) {
     return (
-      <div style={{ textAlign: "center", padding: "2rem" }}>
-        <h2>⏳ Loading complaints...</h2>
-        <p>Please wait while we fetch your data</p>
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <h2>Loading complaints...</h2>
+        <p className="text-muted">Please wait while we fetch your data</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div style={{ textAlign: "center", padding: "2rem" }}>
+      <div className="error-container">
         <h2>❌ Error loading complaints</h2>
         <p>{error.message}</p>
       </div>
@@ -79,71 +80,61 @@ const ComplaintsPage = () => {
   }
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h1>📋 All Complaints</h1>
-      <p>Here are all complaints:</p>
+    <div>
+      <div className="mb-24">
+        <h1
+          style={{ fontSize: "32px", fontWeight: "400", margin: "0 0 8px 0" }}
+        >
+          Complaints
+        </h1>
+        <p className="text-muted">
+          Manage and track all complaints in the system
+        </p>
+      </div>
 
       {complaints.length === 0 ? (
-        <div style={{ textAlign: "center", padding: "2rem" }}>
+        <div className="empty-state">
           <h3>No complaints found</h3>
           <p>Create your first complaint to get started!</p>
         </div>
       ) : (
-        <div
-          style={{
-            display: "grid",
-            gap: "1rem",
-            marginTop: "1rem",
-            gridTemplateColumns: "repeat(auto-fill, minmax(350px, 1fr))",
-          }}
-        >
+        <div className="grid">
           {complaints.map((complaint) => {
             const isUpdating = updatingComplaints.has(complaint._id);
             const currentStatus = complaint.process_status || "pending";
 
             return (
-              <div
-                key={complaint._id}
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "1.5rem",
-                  borderRadius: "8px",
-                  backgroundColor: "#f9f9f9",
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                }}
-              >
-                <h3 style={{ margin: "0 0 0.5rem 0", color: "#333" }}>
-                  Complaint #{complaint._id.slice(-6)}
-                </h3>
-                <p style={{ margin: "0 0 1rem 0", color: "#666" }}>
-                  {complaint.text}
-                </p>
-
-                <div style={{ marginBottom: "1rem" }}>
-                  <span
+              <div key={complaint._id} className="card">
+                <div className="mb-16">
+                  <h3
                     style={{
-                      padding: "0.5rem 1rem",
-                      borderRadius: "20px",
-                      backgroundColor: getStatusColor(currentStatus),
-                      color: "white",
-                      fontSize: "0.875rem",
-                      fontWeight: "bold",
+                      fontSize: "18px",
+                      fontWeight: "500",
+                      margin: "0 0 8px 0",
+                      color: "#202124",
                     }}
                   >
-                    {currentStatus.toUpperCase()}
+                    Complaint #{complaint._id.slice(-6)}
+                  </h3>
+                  <p
+                    style={{
+                      margin: "0",
+                      color: "#5f6368",
+                      lineHeight: "1.5",
+                    }}
+                  >
+                    {complaint.text}
+                  </p>
+                </div>
+
+                <div className="mb-16">
+                  <span className={getStatusClass(currentStatus)}>
+                    {currentStatus}
                   </span>
                 </div>
 
-                <div style={{ marginBottom: "1rem" }}>
-                  <label
-                    style={{
-                      fontSize: "0.875rem",
-                      fontWeight: "bold",
-                      marginRight: "0.5rem",
-                    }}
-                  >
-                    Update Status:
-                  </label>
+                <div className="mb-16">
+                  <label className="form-label">Update Status:</label>
                   <select
                     value={currentStatus}
                     onChange={(e) =>
@@ -154,13 +145,8 @@ const ComplaintsPage = () => {
                       )
                     }
                     disabled={isUpdating || updateStatus.isPending}
-                    style={{
-                      padding: "0.5rem",
-                      borderRadius: "4px",
-                      border: "1px solid #ddd",
-                      fontSize: "0.875rem",
-                      opacity: isUpdating ? 0.6 : 1,
-                    }}
+                    className="form-select"
+                    style={{ width: "100%" }}
                   >
                     <option value="pending">Pending</option>
                     <option value="in-progress">In Progress</option>
@@ -169,17 +155,17 @@ const ComplaintsPage = () => {
                   </select>
                 </div>
 
-                <div style={{ fontSize: "0.875rem", color: "#888" }}>
-                  <p style={{ margin: "0.25rem 0" }}>
+                <div style={{ fontSize: "12px", color: "#9aa0a6" }}>
+                  <p style={{ margin: "4px 0" }}>
                     <strong>User ID:</strong> {complaint.user_id}
                   </p>
-                  <p style={{ margin: "0.25rem 0" }}>
+                  <p style={{ margin: "4px 0" }}>
                     <strong>Created:</strong>{" "}
                     {new Date(complaint.createdAt).toLocaleDateString()}
                   </p>
                   {complaint.updatedAt &&
                     complaint.updatedAt !== complaint.createdAt && (
-                      <p style={{ margin: "0.25rem 0" }}>
+                      <p style={{ margin: "4px 0" }}>
                         <strong>Updated:</strong>{" "}
                         {new Date(complaint.updatedAt).toLocaleDateString()}
                       </p>
@@ -188,13 +174,20 @@ const ComplaintsPage = () => {
 
                 {isUpdating && (
                   <div
+                    className="mt-16"
                     style={{
-                      marginTop: "0.5rem",
-                      fontSize: "0.875rem",
-                      color: "#ff9800",
+                      fontSize: "12px",
+                      color: "#f9ab00",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
                     }}
                   >
-                    ⏳ Updating status...
+                    <div
+                      className="loading-spinner"
+                      style={{ width: "16px", height: "16px" }}
+                    ></div>
+                    Updating status...
                   </div>
                 )}
               </div>

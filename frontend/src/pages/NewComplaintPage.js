@@ -23,102 +23,70 @@ const NewComplaintPage = () => {
   };
 
   return (
-    <div style={{ padding: "2rem", maxWidth: "600px", margin: "0 auto" }}>
-      <h1>➕ Create New Complaint</h1>
-      <p>Fill out the form below to submit a new complaint:</p>
+    <div className="form-container">
+      <div className="form-card">
+        <h1 className="form-title">Create New Complaint</h1>
+        <p className="form-subtitle">
+          Fill out the form below to submit a new complaint
+        </p>
 
-      <form onSubmit={handleSubmit} style={{ marginTop: "2rem" }}>
-        <div style={{ marginBottom: "1.5rem" }}>
-          <label
-            htmlFor="title"
-            style={{
-              display: "block",
-              marginBottom: "0.5rem",
-              fontWeight: "bold",
-            }}
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="title" className="form-label">
+              Complaint Title
+            </label>
+            <input
+              type="text"
+              id="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+              className="form-input"
+              placeholder="Enter complaint title..."
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="description" className="form-label">
+              Description
+            </label>
+            <textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+              rows="5"
+              className="form-input form-textarea"
+              placeholder="Describe your complaint in detail..."
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={createComplaint.isPending}
+            className="btn"
+            style={{ width: "100%" }}
           >
-            Complaint Title:
-          </label>
-          <input
-            type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-            style={{
-              width: "100%",
-              padding: "0.75rem",
-              border: "1px solid #ddd",
-              borderRadius: "4px",
-              fontSize: "1rem",
-            }}
-            placeholder="Enter complaint title..."
-          />
-        </div>
+            {createComplaint.isPending ? (
+              <>
+                <div
+                  className="loading-spinner"
+                  style={{ width: "16px", height: "16px" }}
+                ></div>
+                Submitting...
+              </>
+            ) : (
+              "Submit Complaint"
+            )}
+          </button>
+        </form>
 
-        <div style={{ marginBottom: "1.5rem" }}>
-          <label
-            htmlFor="description"
-            style={{
-              display: "block",
-              marginBottom: "0.5rem",
-              fontWeight: "bold",
-            }}
-          >
-            Description:
-          </label>
-          <textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-            rows="5"
-            style={{
-              width: "100%",
-              padding: "0.75rem",
-              border: "1px solid #ddd",
-              borderRadius: "4px",
-              fontSize: "1rem",
-              resize: "vertical",
-            }}
-            placeholder="Describe your complaint in detail..."
-          />
-        </div>
-
-        <button
-          type="submit"
-          disabled={createComplaint.isPending}
-          style={{
-            backgroundColor: "#007bff",
-            color: "white",
-            padding: "0.75rem 2rem",
-            border: "none",
-            borderRadius: "4px",
-            fontSize: "1rem",
-            cursor: createComplaint.isPending ? "not-allowed" : "pointer",
-            opacity: createComplaint.isPending ? 0.6 : 1,
-          }}
-        >
-          {createComplaint.isPending
-            ? "⏳ Submitting..."
-            : "📤 Submit Complaint"}
-        </button>
-      </form>
-
-      {createComplaint.isError && (
-        <div
-          style={{
-            marginTop: "1rem",
-            padding: "1rem",
-            backgroundColor: "#f8d7da",
-            color: "#721c24",
-            borderRadius: "4px",
-            border: "1px solid #f5c6cb",
-          }}
-        >
-          ❌ Error: {createComplaint.error.message}
-        </div>
-      )}
+        {createComplaint.isError && (
+          <div className="error-container mt-16">
+            ❌ Error: {createComplaint.error.message}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

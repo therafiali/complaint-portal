@@ -29,30 +29,24 @@ function App() {
           {authenticated ? (
             <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
               {!isLoading && user && (
-                <span style={{ color: "#61dafb" }}>
+                <span style={{ color: "#5f6368", fontSize: "14px" }}>
                   👤 Welcome, {user.username}!
                 </span>
               )}
               <button
                 onClick={logout}
-                style={{
-                  backgroundColor: "transparent",
-                  color: "#61dafb",
-                  border: "1px solid #61dafb",
-                  padding: "0.5rem 1rem",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
+                className="btn btn-secondary"
+                style={{ fontSize: "14px", padding: "8px 16px" }}
               >
                 🚪 Logout
               </button>
             </div>
           ) : (
             <div style={{ display: "flex", gap: "1rem" }}>
-              <Link to="/login" className="nav-link">
+              <Link to="/login" className="btn btn-secondary">
                 🔐 Login
               </Link>
-              <Link to="/register" className="nav-link">
+              <Link to="/register" className="btn">
                 📝 Register
               </Link>
             </div>
