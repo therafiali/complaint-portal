@@ -10,7 +10,7 @@ const verifyToken = require("../middleware");
 
 router.post("/register", register);
 router.post("/login", login);
-router.post("/forget", resetPassword);
+router.post("/reset", resetPassword);
 router.get("/user", verifyToken, getUser);
 
 module.exports = router;
